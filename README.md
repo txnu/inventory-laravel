@@ -1,4 +1,4 @@
-<p align="center"><a href="https://kedaiprogrammer.my.id" target="_blank"><img src="{{ asset('images/logo.png') }}" width="400" alt="Kedra Logo"></a></p>
+<p align="center"><a href="https://kedaiprogrammer.my.id" target="_blank"><img src="https://github.com/txnu/inventory-laravel/blob/develop/public/images/logo.png?raw=true" width="400" alt="Kedra Logo"></a></p>
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
