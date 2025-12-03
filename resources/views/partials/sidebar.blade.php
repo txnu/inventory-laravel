@@ -12,6 +12,10 @@
 			:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 max-h-6' : 'opacity-0 max-h-0'">
 			Inventory Management
 		</p>
+		<p class="text-sm text-gray-500 mt-1 transition-all duration-300 overflow-hidden"
+			:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 max-h-6' : 'opacity-0 max-h-0'">
+			by <b>Kedai Programmer Nusantara</b>
+		</p>
 
 		<hr class="my-3 border-gray-200 w-full">
 	</div>
@@ -60,9 +64,9 @@
 
 			<!-- Categories -->
 			<li>
-				<a href="#"
+				<a href="{{ route('category.index') }}"
 					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
-                           {{ request()->routeIs('categories.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+                           {{ request()->routeIs('category.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
 					<x-heroicon-c-list-bullet class="w-5 h-5 min-w-[20px]" />
 					<span class="whitespace-nowrap overflow-hidden transition-all duration-300"
 						:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 w-auto' :
@@ -72,37 +76,23 @@
 				</a>
 			</li>
 
-			<!-- Stock -->
+			<!-- Stock Adjustments -->
 			<li>
-				<a href="#"
+				<a href="{{ route('stock-adjustment.index') }}"
 					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
-                           {{ request()->routeIs('stock.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
-					<x-heroicon-o-cube class="w-5 h-5 min-w-[20px]" />
+                           {{ request()->routeIs('stock-adjustments.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+					<x-heroicon-o-adjustments-horizontal class="w-5 h-5 min-w-[20px]" />
 					<span class="whitespace-nowrap overflow-hidden transition-all duration-300"
 						:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 w-auto' :
 						'opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto'">
-						Stocks
-					</span>
-				</a>
-			</li>
-
-			<!-- Warehouses -->
-			<li>
-				<a href="#"
-					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
-                           {{ request()->routeIs('warehouses.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
-					<x-heroicon-s-cube-transparent class="w-5 h-5 min-w-[20px]" />
-					<span class="whitespace-nowrap overflow-hidden transition-all duration-300"
-						:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 w-auto' :
-						'opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto'">
-						Warehouses
+						Stock Adjustments
 					</span>
 				</a>
 			</li>
 
 			<!-- Stock Movements -->
 			<li>
-				<a href="#"
+				<a href="{{ route('stock-movement.index') }}"
 					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
                            {{ request()->routeIs('stock-movements.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
 					<x-heroicon-o-arrows-right-left class="w-5 h-5 min-w-[20px]" />
@@ -114,16 +104,31 @@
 				</a>
 			</li>
 
-			<!-- Stock Adjustments -->
+			<!-- Stock -->
 			<li>
-				<a href="#"
+				<a href="{{ route('stock.index') }}"
 					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
-                           {{ request()->routeIs('stock-adjustments.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
-					<x-heroicon-o-adjustments-horizontal class="w-5 h-5 min-w-[20px]" />
+                           {{ request()->routeIs('stock.index') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+					<x-heroicon-o-cube class="w-5 h-5 min-w-[20px]" />
 					<span class="whitespace-nowrap overflow-hidden transition-all duration-300"
 						:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 w-auto' :
 						'opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto'">
-						Stock Adjustments
+						Stocks
+					</span>
+				</a>
+			</li>
+
+
+			<!-- Warehouses -->
+			<li>
+				<a href="#"
+					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
+                           {{ request()->routeIs('warehouses.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+					<x-heroicon-s-cube-transparent class="w-5 h-5 min-w-[20px]" />
+					<span class="whitespace-nowrap overflow-hidden transition-all duration-300"
+						:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 w-auto' :
+						'opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto'">
+						Warehouses
 					</span>
 				</a>
 			</li>

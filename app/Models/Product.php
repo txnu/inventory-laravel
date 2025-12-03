@@ -24,12 +24,24 @@ class Product extends Model
         'barcode',
         'image_url',
         'is_active',
-        'created_at',
-        'updated_at',
     ];
 
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'category_id');
+    }
+
+    public function stock()
+    {
+        return $this->hasOne(Stock::class, 'product_id', 'product_id');
+    }
+
+    public function getStockQuantityAttribute()
+    {
+        if (!$this->stock) {
+            return 0;
+        }
+
+        return $this->stock->qty_on_hand - $this->stock->qty_reserved;
     }
 }

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+
 class DashboardController extends Controller
 {
-    public function view()
+    public function index()
     {
-        return view('dashboard');
+        $product_count = Product::count();
+        return view('dashboard', compact('product_count'));
     }
 }

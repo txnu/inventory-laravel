@@ -15,7 +15,7 @@
 					<h2 class="text-sm text-gray-500">Total Products</h2>
 					<i class="fa-solid fa-box text-blue-500"></i>
 				</div>
-				<p class="text-2xl font-semibold text-gray-800">1,240</p>
+				<p class="text-2xl font-semibold text-gray-800">{{ $product_count }}</p>
 				<span class="text-xs text-green-600">+12% from last month</span>
 			</div>
 

@@ -8,7 +8,7 @@
 
 
 			<div class="flex flex-col">
-				<h1 class="text-2xl font-bold text-gray-800">
+				<h1 class="hidden sm:block text-2xl font-bold text-gray-800">
 					{{ $title ?? 'Dashboard' }}
 				</h1>
 				@if (isset($breadcrumbs))

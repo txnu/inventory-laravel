@@ -4,32 +4,42 @@
 	<div x-data="productModal()" class="relative w-full px-4 py-3">
 		<div class="min-h-screen w-full bg-white rounded-2xl p-6">
 			@if (session('success'))
-				<div class="mb-4 p-5 text-green-800 bg-green-100 rounded-md">
+				<div class="mb-4 px-5 py-3 text-green-800 bg-green-100 rounded-md">
 					{{ session('success') }}
+				</div>
+			@endif
+
+			@if ($errors->any())
+				<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+					<ul class="list-disc list-inside">
+						@foreach ($errors->all() as $error)
+							<li>{{ $error }}</li>
+						@endforeach
+					</ul>
 				</div>
 			@endif
 
 			<div class="flex flex-col gap-4">
 
-				{{-- Header: Search & Print --}}
+				{{-- Header Table --}}
 				<div class="flex justify-between items-center gap-4">
 					<div class="flex items-center gap-2">
 						<input type="text" placeholder="Cari produk..."
 							class="px-3 py-2 text-sm rounded-3xl border border-gray-300 focus:border-blue-400 focus:outline-none">
-						{{-- <button class="p-2 bg-blue-400 text-white rounded-3xl hover:bg-blue-500">
-                        <x-zondicon-search class="w-6 "/>
-                    </button> --}}
 					</div>
 					<div class="flex items-center gap-2">
 						<button class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer">
 							<x-zondicon-printer class="w-5" />
 						</button>
-						<button class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-800 cursor-pointer">
+						<a href="{{ route('product.create') }}"
+							class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-800 cursor-pointer">
 							<x-heroicon-o-plus class="w-5" />
-						</button>
+						</a>
 					</div>
 				</div>
+				{{-- End Header Table --}}
 
+				{{-- Table Content --}}
 				<div class="overflow-x-auto relative min-h-screen">
 					<table class="w-full text-left border-collapse">
 						<thead>
@@ -39,7 +49,7 @@
 								<th class="py-2 px-2">Description</th>
 								<th class="py-2 px-2">Category</th>
 								<th class="py-2 px-2">Unit</th>
-								<th class="py-2 px-2">Selling Price</th>
+								<th class="py-2 px-2">Selling Price (Rp)</th>
 								<th class="py-2 px-2">Status</th>
 								<th class="py-2 px-2 text-center">Action</th>
 							</tr>
@@ -94,6 +104,7 @@
 						</tbody>
 					</table>
 				</div>
+				{{-- End Table Content --}}
 
 			</div>
 		</div>

@@ -15,6 +15,7 @@ class ProductSeeder extends Seeder
         Product::insert([
             [
                 'sku' => 'PRD001',
+                'category_id' => 1,
                 'product_name' => 'Kopi Arabica',
                 'description' => 'Kopi dengan aroma yang khas',
                 'purchase_price' => 20000,
@@ -25,6 +26,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'sku' => 'PRD002',
+                'category_id' => 1,
                 'product_name' => 'Kopi Luwak',
                 'description' => 'Kopi dengan pengolahan terbaik',
                 'purchase_price' => 28000,

@@ -1,52 +1,58 @@
 @extends('layout')
 
 @section('content')
-	<div x-data="categoryModal()" class="relative w-full px-4 py-3">
-		<div class="h-full w-full bg-white rounded-2xl p-6">
-			@if (session('success'))
-				<div class="mb-4 px-5 py-3 text-green-800 bg-green-100 rounded-md">
-					{{ session('success') }}
-				</div>
-			@endif
+	<div x-data="stockMovementModal()" class="relative w-full px-4 py-3">
+		<div class="min-h-screen w-full bg-white rounded-2xl p-6">
 
 			<div class="flex flex-col gap-4">
 
-				{{-- Header: Search & Print --}}
+				{{-- Header Table --}}
 				<div class="flex justify-between items-center gap-4">
 					<div class="flex items-center gap-2">
-						<input type="text" placeholder="Search..."
+						<input type="text" placeholder="Cari Produk..."
 							class="px-3 py-2 text-sm rounded-3xl border border-gray-300 focus:border-blue-400 focus:outline-none">
 					</div>
 					<div class="flex items-center gap-2">
 						<button class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer">
 							<x-zondicon-printer class="w-5" />
 						</button>
-						<a href="{{ route('category.create') }}"
-							class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-800 cursor-pointer">
-							<x-heroicon-o-plus class="w-5" />
-						</a>
 					</div>
 				</div>
+				{{-- End Header Table --}}
 
-
+				{{-- Table Content --}}
 				<div class="overflow-x-auto relative min-h-screen">
 					<table class="w-full text-left border-collapse">
 						<thead>
 							<tr class="text-sm border-b text-gray-500">
-								<th class="py-2 px-2">Category name</th>
-								<th class="py-2 px-2">Description</th>
-								<th class="py-2 px-2">Parent</th>
+								<th class="py-2 px-2">Product Name</th>
+								<th class="py-2 px-2">Reference Type</th>
+								<th class="py-2 px-2">Qty</th>
+								<th class="py-2 px-2">Before</th>
+								<th class="py-2 px-2">After</th>
+								<th class="py-2 px-2">Movement Type</th>
+								<th class="py-2 px-2">Created By</th>
 								<th class="py-2 px-2 text-center">Action</th>
 							</tr>
 						</thead>
 						<tbody>
-							@foreach ($categories as $c)
+							@foreach ($stock_movement as $sm)
 								<tr class="text-sm text-gray-700 border-b hover:bg-gray-50">
-									<td class="py-2 px-2 overflow-hidden text-ellipsis whitespace-nowrap">{{ $c->category_name }}</td>
-									<td class="py-2 px-2 overflow-hidden text-ellipsis whitespace-nowrap">{{ $c->description }}</td>
-									<td class="py-2 px-2">{{ $c->parent_category_id ?? '-' }}</td>
+									<td class="py-2 px-2">{{ $sm->product->product_name }}</td>
+									<td class="py-2 px-2">{{ $sm->reference_type }}</td>
+									<td class="py-2 px-2">{{ $sm->qty }}</td>
+									<td class="py-2 px-2">{{ $sm->before_qty }}</td>
+									<td class="py-2 px-2">{{ $sm->after_qty }}</td>
+									<td class="py-2 px-2 font-bold">
+										<span
+											class="px-2 py-1 text-xs rounded-lg
+                                    {{ $sm->movement_type ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
+											{{ $sm->movement_type ? 'IN' : 'OUT' }}
+										</span>
+									</td>
+									<td class="py-2 px-2">{{ $sm->user->name }}</td>
 									<td class="py-2 px-2 text-center" x-data="{ open: false }">
-										<div class="relative">
+										<div class="relative ">
 											<button @click="open = !open" class="p-1 text-gray-600 hover:text-gray-800 cursor-pointer">
 												<x-tabler-dots />
 											</button>
@@ -55,22 +61,10 @@
 											<div x-show="open" @click.outside="open = false" x-transition
 												x-anchor.bottom-end="$el.previousElementSibling"
 												class="absolute overflow-visible text-left right-0 mt-1 w-40 bg-white shadow-lg rounded-lg border border-gray-100 z-100">
-												<button @click="openModal({{ $c->category_id }}, 'view'); open = false"
+												<button @click="openModal({{ $sm->stock_m_id }}, 'view'); open = false"
 													class="block text-left px-3 py-2 text-sm text-gray-700 w-full hover:bg-gray-100 cursor-pointer">
 													Detail
 												</button>
-												<button @click="openModal({{ $c->category_id }}, 'edit'); open = false"
-													class="block text-left px-3 py-2 text-sm hover:bg-gray-100 w-full">
-													Edit
-												</button>
-												<form action="{{ route('product.delete', $c->category_id) }}" method="POST"
-													onsubmit="return confirm('Are you sure to delete this product?')">
-													@csrf
-													@method('DELETE')
-													<button type="submit" class="w-full text-left px-3 py-2 text-sm hover:bg-red-100 text-red-600">
-														Delete
-													</button>
-												</form>
 											</div>
 										</div>
 									</td>
@@ -79,7 +73,7 @@
 						</tbody>
 					</table>
 				</div>
-
+				{{-- End Table Content --}}
 			</div>
 		</div>
 		<template x-if="showModal">
@@ -111,7 +105,7 @@
 	</div>
 
 	<script>
-		function categoryModal() {
+		function stockMovementModal() {
 			return {
 				showModal: false,
 				loading: false,
@@ -125,8 +119,8 @@
 					this.modalContent = '';
 
 					try {
-						const response = await fetch(`/category/${id}?mode=${mode}`);
-						if (!response.ok) throw new Error('Failed to fetch categories data');
+						const response = await fetch(`/stock-movement/${id}?mode=${mode}`);
+						if (!response.ok) throw new Error('Gagal memuat data produk');
 						const html = await response.text();
 						this.modalContent = html;
 					} catch (e) {
