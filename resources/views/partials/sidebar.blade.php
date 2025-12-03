@@ -185,7 +185,7 @@
 
 			<!-- Suppliers -->
 			<li>
-				<a href="#"
+				<a href="{{ route('supplier.index') }}"
 					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
                            {{ request()->routeIs('suppliers.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
 					<x-heroicon-o-truck class="w-5 h-5 min-w-[20px]" />

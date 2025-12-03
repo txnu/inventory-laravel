@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cache;
 use Milon\Barcode\DNS1D;
@@ -41,6 +42,14 @@ Route::get('/stock-movement', [StockMovementController::class, 'index'])->name('
 // Stock Route
 Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
 Route::get('/stock/create', [StockController::class, 'create'])->name('stock.create');
+
+// Supplier Route
+Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier.index');
+Route::get('/supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
+Route::post('/supplier/store', [SupplierController::class, 'store'])->name('supplier.store');
+Route::get('/supplier/{id}', [SupplierController::class, 'detail'])->name('supplier.detail');
+Route::put('/supplier/update/{id}', [SupplierController::class, 'update'])->name('supplier.update');
+Route::delete('/supplier/delete/{id}', [SupplierController::class, 'destroy'])->name('supplier.delete');
 
 
 Route::get('/barcode/{code}', function ($code) {
