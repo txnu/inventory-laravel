@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-4">
 	<h2 class="text-xl font-semibold mb-2">
-		{{ $mode === 'edit' ? 'Edit Product' : 'Product Detail' }}
+		{{ $mode === 'edit' ? 'Stock Adjustment' : 'Stock Adjustment Detail' }}
 	</h2>
 
 	<form action="{{ route('product.update', $product->product_id) }}" method="POST"
