@@ -89,7 +89,9 @@ class StockAdjustmentController extends Controller
      */
     public function edit(StockAdjustment $stockAdjustment)
     {
-        //
+        $supplier = $stockAdjustment::get();
+
+        return view('layouts.stock-adjustment.modal', compact('supplier'));
     }
 
     /**
