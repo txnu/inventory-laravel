@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email');
             $table->bigInteger('phone');
             $table->string('address');
-            $table->boolean('is_active');
+            $table->boolean('status');
             $table->timestamps();
         });
     }
