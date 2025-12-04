@@ -18,6 +18,6 @@ class Customer extends Model
         'email',
         'phone',
         'address',
-        'is_active'
+        'customer'
     ];
 }

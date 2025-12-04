@@ -50,48 +50,53 @@
 								<th class="py-2 px-2">Phone</th>
 								<th class="py-2 px-2">Address</th>
 								<th class="py-2 px-2">Status</th>
+								<th class="py-2 px-2">Join</th>
 								<th class="py-2 px-2 text-center">Action</th>
 							</tr>
 						</thead>
 						<tbody>
-
-							<tr class="text-sm text-gray-700 border-b hover:bg-gray-50">
-								<td class="py-2 px-2">PT. Kedai Programmer Nusantara</td>
-								<td class="py-2 px-2 overflow-hidden text-ellipsis whitespace-nowrap">Test</td>
-								<td class="py-2 px-2 overflow-hidden text-ellipsis whitespace-nowrap">test@example.com</td>
-								<td class="py-2 px-2">(+62) 8xxxxxxxxx</td>
-								<td class="py-2 px-2">West Borneo, Indonesia</td>
-								<td class="py-2 px-2">
-									<span class="px-2 py-1 text-xs rounded-lg bg-green-100 text-green-600" {{-- {{ $p->is_active ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}" --}}>
-										Active
-										{{-- {{ $p->is_active ? 'Active' : 'Inactive' }} --}}
-									</span>
-								</td>
-								<td class="py-2
+							@foreach ($supplier as $spr)
+								<tr class="text-sm text-gray-700 border-b hover:bg-gray-50">
+									<td class="py-2 px-2">{{ $spr->supplier_name }}</td>
+									<td class="py-2 px-2 overflow-hidden text-ellipsis whitespace-nowrap">{{ $spr->contact_name }}</td>
+									<td class="py-2 px-2 overflow-hidden text-ellipsis whitespace-nowrap">{{ $spr->email }}</td>
+									<td class="py-2 px-2">{{ $spr->phone }}</td>
+									<td class="py-2 px-2 whitespace-nowrap overflow-ellipsis line-clamp-1">{{ $spr->address }}</td>
+									<td class="py-2 px-2"> <span
+											class="px-2 py-1 text-xs rounded-lg bg-green-100 text-green-600 {{ $spr->status ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}
+										}}">
+											{{ $spr->status ? 'Active' : 'Inactive' }}
+										</span>
+									</td>
+									<td class="py-2 px-2">{{ $spr->join_at }}</td>
+									<td class="py-2
 										px-2 text-center" x-data="{ open: false }">
-									<div class="relative ">
-										<button @click="open = !open" class="p-1 text-gray-600 hover:text-gray-800 cursor-pointer">
-											<x-tabler-dots />
-										</button>
-
-										{{-- Dropdown Aksi --}}
-										<div x-show="open" @click.outside="open = false" x-transition x-anchor.bottom-end="$el.previousElementSibling"
-											class="absolute overflow-visible text-left right-0 mt-1 w-40 bg-white shadow-lg rounded-lg border border-gray-100 z-100">
-											<button @click="openModal('', 'edit'); open = false"
-												class="block text-left px-3 py-2 text-sm hover:bg-gray-100 w-full">
-												Edit
+										<div class="relative ">
+											<button @click="open = !open" class="p-1 text-gray-600 hover:text-gray-800 cursor-pointer">
+												<x-tabler-dots />
 											</button>
-											<form action="#" method="POST" onsubmit="return confirm('Are you sure to delete this product?')">
-												@csrf
-												@method('DELETE')
-												<button type="submit" class="w-full text-left px-3 py-2 text-sm hover:bg-red-100 text-red-600">
-													Delete
+
+											{{-- Dropdown Aksi --}}
+											<div x-show="open" @click.outside="open = false" x-transition
+												x-anchor.bottom-end="$el.previousElementSibling"
+												class="absolute overflow-visible text-left right-0 mt-1 w-40 bg-white shadow-lg rounded-lg border border-gray-100 z-100">
+												<button @click="openModal({{ $spr->supplier_id }}, 'edit'); open = false"
+													class="block text-left px-3 py-2 text-sm hover:bg-gray-100 w-full">
+													Edit
 												</button>
-											</form>
+												<form action="#" method="POST" onsubmit="return confirm('Are you sure to delete this product?')">
+													@csrf
+													@method('DELETE')
+													<button type="submit" class="w-full text-left px-3 py-2 text-sm hover:bg-red-100 text-red-600">
+														Delete
+													</button>
+												</form>
+											</div>
 										</div>
-									</div>
-								</td>
-							</tr>
+									</td>
+								</tr>
+							@endforeach
+
 						</tbody>
 					</table>
 				</div>
@@ -142,8 +147,8 @@
 					this.modalContent = '';
 
 					try {
-						const response = await fetch(`/product/${id}?mode=${mode}`);
-						if (!response.ok) throw new Error('Gagal memuat data produk');
+						const response = await fetch(`/supplier/${id}?mode=${mode}`);
+						if (!response.ok) throw new Error('Failed to fetch supplier');
 						const html = await response.text();
 						this.modalContent = html;
 					} catch (e) {

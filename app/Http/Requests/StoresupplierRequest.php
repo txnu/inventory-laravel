@@ -11,7 +11,7 @@ class StoresupplierRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class StoresupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'supplier_name' => 'string|required|max:100',
+            'contact_name' => 'string|required|max:100',
+            'email' => 'string|required',
+            'phone' => 'number|required|max:15',
+            'address' => 'string|required',
+            'join_at' => 'date|required',
+            'status' => 'boolean|required'
         ];
     }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->bigInteger('phone');
             $table->string('address');
             $table->date('join_at');
-            $table->boolean('is_active');
+            $table->boolean('status');
             $table->timestamps();
         });
     }

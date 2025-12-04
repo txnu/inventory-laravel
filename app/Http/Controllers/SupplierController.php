@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoresupplierRequest;
-use App\Http\Requests\UpdatesupplierRequest;
-use App\Models\supplier;
+use App\Http\Requests\StoreSupplierRequest;
+use App\Http\Requests\UpdateSupplierRequest;
+use App\Models\Supplier;
 
 class SupplierController extends Controller
 {
@@ -13,7 +13,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        return view('layouts.supplier.index');
+        $supplier = Supplier::get();
+        return view('layouts.supplier.index', compact('supplier'));
     }
 
     /**
@@ -21,13 +22,13 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        //
+        return view('layouts.supplier.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoresupplierRequest $request)
+    public function store(StoreSupplierRequest $request)
     {
         //
     }
@@ -35,9 +36,12 @@ class SupplierController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(supplier $supplier)
+    public function show(Supplier $supplier, $id)
     {
-        //
+        $spr = $supplier::where('supplier_id', $id)->firstOrFail();
+        $mode = request()->query('mode', 'view');
+
+        return view('layouts.supplier.modal', compact('spr', 'mode'));
     }
 
     /**
