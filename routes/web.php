@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockMovementController;
@@ -50,6 +51,15 @@ Route::post('/supplier/store', [SupplierController::class, 'store'])->name('supp
 Route::get('/supplier/{id}', [SupplierController::class, 'edit'])->name('supplier.edit');
 Route::put('/supplier/update/{id}', [SupplierController::class, 'update'])->name('supplier.update');
 Route::delete('/supplier/delete/{id}', [SupplierController::class, 'destroy'])->name('supplier.delete');
+
+// Customer Route
+Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');
+Route::get('/customer/create', [CustomerController::class, 'create'])->name('customer.create');
+Route::post('/customer/store', [CustomerController::class, 'store'])->name('customer.store');
+Route::get('/customer/{id}', [CustomerController::class, 'show'])->name('customer.show');
+Route::get('/customer/{id}', [CustomerController::class, 'edit'])->name('customer.edit');
+Route::put('/customer/update/{id}', [CustomerController::class, 'update'])->name('customer.update');
+Route::delete('/customer/delete/{id}', [CustomerController::class, 'destroy'])->name('customer.delete');
 
 
 Route::get('/barcode/{code}', function ($code) {

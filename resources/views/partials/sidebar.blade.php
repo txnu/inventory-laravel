@@ -80,7 +80,7 @@
 			<li>
 				<a href="{{ route('stock-adjustment.index') }}"
 					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
-                           {{ request()->routeIs('stock-adjustments.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+                           {{ request()->routeIs('stock-adjustment.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
 					<x-heroicon-o-adjustments-horizontal class="w-5 h-5 min-w-[20px]" />
 					<span class="whitespace-nowrap overflow-hidden transition-all duration-300"
 						:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 w-auto' :
@@ -94,7 +94,7 @@
 			<li>
 				<a href="{{ route('stock-movement.index') }}"
 					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
-                           {{ request()->routeIs('stock-movements.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+                           {{ request()->routeIs('stock-movement.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
 					<x-heroicon-o-arrows-right-left class="w-5 h-5 min-w-[20px]" />
 					<span class="whitespace-nowrap overflow-hidden transition-all duration-300"
 						:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 w-auto' :
@@ -187,7 +187,7 @@
 			<li>
 				<a href="{{ route('supplier.index') }}"
 					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
-                           {{ request()->routeIs('suppliers.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+                           {{ request()->routeIs('supplier.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
 					<x-heroicon-o-truck class="w-5 h-5 min-w-[20px]" />
 					<span class="whitespace-nowrap overflow-hidden transition-all duration-300"
 						:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 w-auto' :
@@ -199,9 +199,9 @@
 
 			<!-- Customers -->
 			<li>
-				<a href="#"
+				<a href="{{ route('customer.index') }}"
 					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
-                           {{ request()->routeIs('customers.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+                           {{ request()->routeIs('customer.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
 					<x-heroicon-o-user-group class="w-5 h-5 min-w-[20px]" />
 					<span class="whitespace-nowrap overflow-hidden transition-all duration-300"
 						:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 w-auto' :
