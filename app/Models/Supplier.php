@@ -19,6 +19,7 @@ class supplier extends Model
         'email',
         'phone',
         'address',
+        'join_at',
         'status'
     ];
 }

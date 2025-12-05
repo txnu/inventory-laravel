@@ -27,8 +27,7 @@
 					<div>
 						<label class="block text-sm text-gray-600">Contact name</label>
 						<input type="text" name="contact_name"
-							class="uppercase w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
-							required>
+							class=" w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500 focus:outline-none" required>
 					</div>
 
 					<div>
@@ -39,13 +38,19 @@
 
 					<div>
 						<label class="block text-sm text-gray-600">Number phone</label>
-						<input type="number" name="selling_price"
+						<input type="number" name="phone"
+							class="w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500 focus:outline-none" required>
+					</div>
+
+					<div>
+						<label class="block text-sm text-gray-600">Join at</label>
+						<input type="date" name="join_at"
 							class="w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500 focus:outline-none" required>
 					</div>
 
 					<div>
 						<label class="block text-sm text-gray-600">Status</label>
-						<select name="is_active" class="w-full px-3 py-2 border rounded-md focus:border-blue-400 focus:outline-none">
+						<select name="status" class="w-full px-3 py-2 border rounded-md focus:border-blue-400 focus:outline-none">
 							<option value="0">Inactive</option>
 							<option value="1">Active</option>
 						</select>

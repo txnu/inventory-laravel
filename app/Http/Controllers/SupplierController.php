@@ -30,13 +30,22 @@ class SupplierController extends Controller
      */
     public function store(StoreSupplierRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        Supplier::create([
+            'supplier_name' => $data['supplier_name'],
+            'contact_name' => $data['contact_name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'address' => $data['address'],
+            'join_at' => $data['join_at'],
+            'status' => $data['status'],
+        ]);
+
+        return redirect()->route('supplier.index')->with('success', 'Supplier created');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Supplier $supplier, $id)
+    public function edit(Supplier $supplier, $id)
     {
         $spr = $supplier::where('supplier_id', $id)->firstOrFail();
         $mode = request()->query('mode', 'view');
@@ -45,26 +54,27 @@ class SupplierController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(supplier $supplier)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatesupplierRequest $request, supplier $supplier)
+    public function update(UpdateSupplierRequest $request, Supplier $supplier, $id)
     {
-        //
+        $data = $request->validated();
+
+        $update = $supplier::where('supplier_id', $id)->firstOrFail();
+        $update->update($data);
+
+        return redirect()->route('supplier.index')->with('success', 'Supplier updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(supplier $supplier)
+    public function destroy(Supplier $supplier, $id)
     {
-        //
+        $supplier::where('supplier_id', $id)->delete();
+
+        return redirect()
+            ->route('supplier.index')
+            ->with('success', 'Supplier deleted successfully');
     }
 }

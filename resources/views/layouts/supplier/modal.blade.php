@@ -18,7 +18,7 @@
 
 		<div>
 			<label class="block text-sm text-gray-600">Contact name</label>
-			<input type="text" name="purchase_price"
+			<input type="text" name="contact_name"
 				class="w-full px-3 py-2 border rounded-md focus:border-blue-400 focus:outline-none {{ $mode === 'view' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'bg-white' }}"
 				value="{{ $spr->contact_name }}" {{ $mode === 'view' ? 'readonly' : '' }}>
 		</div>

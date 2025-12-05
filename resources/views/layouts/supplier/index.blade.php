@@ -84,7 +84,8 @@
 													class="block text-left px-3 py-2 text-sm hover:bg-gray-100 w-full">
 													Edit
 												</button>
-												<form action="#" method="POST" onsubmit="return confirm('Are you sure to delete this product?')">
+												<form action="{{ route('supplier.delete', $spr->supplier_id) }}" method="POST"
+													onsubmit="return confirm('Are you sure to delete this product?')">
 													@csrf
 													@method('DELETE')
 													<button type="submit" class="w-full text-left px-3 py-2 text-sm hover:bg-red-100 text-red-600">
