@@ -9,6 +9,7 @@ use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cache;
 use Milon\Barcode\DNS1D;
@@ -43,6 +44,15 @@ Route::get('/stock-movement', [StockMovementController::class, 'index'])->name('
 // Stock Route
 Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
 Route::get('/stock/create', [StockController::class, 'create'])->name('stock.create');
+
+// Warehouse Route
+Route::get('/warehouse', [WarehouseController::class, 'index'])->name('warehouse.index');
+Route::get('/warehouse/create', [WarehouseController::class, 'create'])->name('warehouse.create');
+Route::post('/warehouse/store', [WarehouseController::class, 'store'])->name('warehouse.store');
+Route::get('/warehouse/{id}', [WarehouseController::class, 'show'])->name('warehouse.show');
+Route::get('/warehouse/{id}', [WarehouseController::class, 'edit'])->name('warehouse.edit');
+Route::put('/warehouse/update/{id}', [WarehouseController::class, 'update'])->name('warehouse.update');
+Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'destroy'])->name('warehouse.delete');
 
 // Supplier Route
 Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier.index');

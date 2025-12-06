@@ -121,9 +121,9 @@
 
 			<!-- Warehouses -->
 			<li>
-				<a href="#"
+				<a href="{{ route('warehouse.index') }}"
 					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
-                           {{ request()->routeIs('warehouses.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+                           {{ request()->routeIs('warehouse.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
 					<x-heroicon-s-cube-transparent class="w-5 h-5 min-w-[20px]" />
 					<span class="whitespace-nowrap overflow-hidden transition-all duration-300"
 						:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 w-auto' :
