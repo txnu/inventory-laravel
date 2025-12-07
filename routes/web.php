@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockMovementController;
@@ -53,6 +54,16 @@ Route::get('/warehouse/{id}', [WarehouseController::class, 'show'])->name('wareh
 Route::get('/warehouse/{id}', [WarehouseController::class, 'edit'])->name('warehouse.edit');
 Route::put('/warehouse/update/{id}', [WarehouseController::class, 'update'])->name('warehouse.update');
 Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'destroy'])->name('warehouse.delete');
+
+
+// Transactions Route
+Route::get('/purchase-order', [PurchaseOrderController::class, 'index'])->name('purchase-order.index');
+Route::get('/purchase-order/create', [PurchaseOrderController::class, 'create'])->name('purchase-order.create');
+Route::post('/purchase-order/store', [PurchaseOrderController::class, 'store'])->name('purchase-order.store');
+Route::get('/purchase-order/show/{id}', [PurchaseOrderController::class, 'show'])->name('purchase-order.show');
+Route::get('/purchase-order/edit/{id}', [PurchaseOrderController::class, 'edit'])->name('purchase-order.edit');
+Route::put('/purchase-order/update/{id}', [PurchaseOrderController::class, 'update'])->name('purchase-order.update');
+Route::delete('/purchase-order/delete/{id}', [PurchaseOrderController::class, 'destroy'])->name('purchase-order.delete');
 
 // Supplier Route
 Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier.index');

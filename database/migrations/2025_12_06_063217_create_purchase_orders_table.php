@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('delivery_date');
             $table->enum('status', ['draft', 'ordered', 'received', 'closed', 'canceled']);
             $table->string('notes');
+            $table->decimal('total_amount');
             $table->timestamps();
         });
     }

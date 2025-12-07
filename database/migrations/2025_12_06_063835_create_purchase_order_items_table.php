@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('purchase_order_items', function (Blueprint $table) {
             $table->id('po_item_id');
+            $table->foreignId('po_id')
+                ->constrained('purchase_orders', 'po_id')
+                ->onDelete('restrict');
             $table->foreignId('product_id')
                 ->constrained('products', 'product_id')
-                ->onDelete('restrict');;
+                ->onDelete('restrict');
             $table->bigInteger('qty_ordered');
             $table->bigInteger('qty_received');
             $table->double('price');

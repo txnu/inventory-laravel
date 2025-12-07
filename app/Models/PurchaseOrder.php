@@ -28,4 +28,9 @@ class PurchaseOrder extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_id', 'supplier_id');
     }
+
+    public function items()
+    {
+        return $this->hasMany(PurchaseOrderItems::class, 'po_id', 'po_id');
+    }
 }

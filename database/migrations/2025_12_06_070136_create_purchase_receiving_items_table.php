@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('purchase_receiving_items', function (Blueprint $table) {
             $table->id('pr_item_id');
+            $table->foreignId('pr_id')
+                ->constrained('purchase_receivings', 'pr_id')
+                ->onDelete('restrict');
             $table->foreignId('product_id')
                 ->constrained('products', 'product_id')
                 ->onDelete('restrict');

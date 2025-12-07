@@ -11,7 +11,7 @@ class StorePurchaseOrderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,18 @@ class StorePurchaseOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'po_code' => 'required|unique:purchase_orders',
+            'supplier_id' => 'required|exists:suppliers,supplier_id',
+            'order_date' => 'required|date',
+            'delivery_date' => 'required|date',
+            'status' => 'required|string',
+            'notes' => 'required|string',
+            'total_amount' => 'required|numeric',
+            'items' => 'required|array|min:1',
+            'items.*.product_id' => 'required|exists:products,product_id',
+            'items.*.qty_ordered' => 'required|integer|min:1',
+            'items.*.price' => 'required|numeric|min:0',
+            'items.*.total' => 'required|numeric|min:0',
         ];
     }
 }
