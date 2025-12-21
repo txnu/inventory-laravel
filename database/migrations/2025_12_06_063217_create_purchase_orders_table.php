@@ -19,9 +19,9 @@ return new class extends Migration
                 ->onDelete('restrict');;
             $table->date('order_date');
             $table->date('delivery_date');
-            $table->enum('status', ['draft', 'ordered', 'received', 'closed', 'canceled']);
+            $table->enum('status', ['draft', 'ordered', 'received', 'closed', 'canceled'])->default('ordered');
             $table->string('notes');
-            $table->decimal('total_amount');
+            $table->decimal('total_amount', 15, 2);
             $table->timestamps();
         });
     }
