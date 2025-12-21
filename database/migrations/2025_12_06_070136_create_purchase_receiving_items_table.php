@@ -20,7 +20,7 @@ return new class extends Migration
                 ->constrained('products', 'product_id')
                 ->onDelete('restrict');
             $table->integer('qty_received');
-            $table->string('note');
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }
