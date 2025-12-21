@@ -158,6 +158,20 @@
 				</a>
 			</li>
 
+			<!-- Purchase Orders -->
+			<li>
+				<a href="{{ route('purchase-receiving.index') }}"
+					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
+                           {{ request()->routeIs('purchase-receiving.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+					<x-heroicon-o-shopping-cart class="w-5 h-5 min-w-[20px]" />
+					<span class="whitespace-nowrap overflow-hidden transition-all duration-300"
+						:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 w-auto' :
+						'opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto'">
+						Purchase Receivings
+					</span>
+				</a>
+			</li>
+
 			<!-- Sales Orders -->
 			<li>
 				<a href="#"

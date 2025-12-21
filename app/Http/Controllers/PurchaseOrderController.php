@@ -44,7 +44,7 @@ class PurchaseOrderController extends Controller
             'supplier_id' => $data['supplier_id'],
             'order_date' => $data['order_date'],
             'delivery_date' => $data['delivery_date'],
-            'status' => $data['status'],
+            'status' => 'ordered',
             'notes' => $data['notes'],
             'total_amount' => $data['total_amount']
         ]);
@@ -78,7 +78,7 @@ class PurchaseOrderController extends Controller
         $items = $po->items->map(function ($item) {
             return [
                 'product_id' => $item->product_id,
-                'qty_ordered'        => $item->qty_ordered,
+                'qty_ordered' => $item->qty_ordered,
                 'price'      => $item->price,
                 'total'      => $item->qty_ordered * $item->price,
             ];

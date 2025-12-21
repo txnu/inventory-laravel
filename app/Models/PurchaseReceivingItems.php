@@ -13,7 +13,7 @@ class PurchaseReceivingItems extends Model
     protected $primaryKey = 'pr_item_id';
 
     protected $fillable = [
-        'receiving_id',
+        'pr_id',
         'product_id',
         'qty_received',
         'note',
@@ -21,7 +21,7 @@ class PurchaseReceivingItems extends Model
 
     public function purchase_receiving()
     {
-        return $this->belongsTo(PurchaseReceiving::class, 'pr_id', 'receiving_id');
+        return $this->belongsTo(PurchaseReceiving::class, 'pr_id', 'pr_id');
     }
 
     public function product()

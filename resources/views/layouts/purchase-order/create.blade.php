@@ -53,18 +53,6 @@
 						<input type="date" name="delivery_date"
 							class="w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500 focus:outline-none" required>
 					</div>
-
-					{{-- Status --}}
-					<div>
-						<label class="block text-sm text-gray-600">Status</label>
-						<select name="status" class="w-full px-3 py-2 border rounded-md">
-							@foreach (['draft', 'ordered', 'received', 'closed', 'canceled'] as $status)
-								<option value="{{ $status }}">
-									{{ ucfirst($status) }}
-								</option>
-							@endforeach
-						</select>
-					</div>
 				</div>
 
 				<div class="mt-4">

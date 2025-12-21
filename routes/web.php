@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\PurchaseReceivingController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockMovementController;
@@ -57,6 +58,8 @@ Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'destroy'])
 
 
 // Transactions Route
+
+// Purchase Order
 Route::get('/purchase-order', [PurchaseOrderController::class, 'index'])->name('purchase-order.index');
 Route::get('/purchase-order/create', [PurchaseOrderController::class, 'create'])->name('purchase-order.create');
 Route::post('/purchase-order/store', [PurchaseOrderController::class, 'store'])->name('purchase-order.store');
@@ -64,6 +67,19 @@ Route::get('/purchase-order/show/{id}', [PurchaseOrderController::class, 'show']
 Route::get('/purchase-order/edit/{id}', [PurchaseOrderController::class, 'edit'])->name('purchase-order.edit');
 Route::put('/purchase-order/update/{id}', [PurchaseOrderController::class, 'update'])->name('purchase-order.update');
 Route::delete('/purchase-order/delete/{id}', [PurchaseOrderController::class, 'destroy'])->name('purchase-order.delete');
+
+// Purchase Receiving
+Route::get('/purchase-receiving', [PurchaseReceivingController::class, 'index'])->name('purchase-receiving.index');
+Route::get('/purchase-receiving/create', [PurchaseReceivingController::class, 'create'])->name('purchase-receiving.create');
+Route::post('/purchase-receiving/store', [PurchaseReceivingController::class, 'store'])->name('purchase-receiving.store');
+Route::get('/purchase-receiving/show/{id}', [PurchaseReceivingController::class, 'show'])->name('purchase-receiving.show');
+Route::get('/purchase-receiving/edit/{id}', [PurchaseReceivingController::class, 'edit'])->name('purchase-receiving.edit');
+Route::put('/purchase-receiving/update/{id}', [PurchaseReceivingController::class, 'update'])->name('purchase-receiving.update');
+Route::delete('/purchase-receiving/delete/{id}', [PurchaseReceivingController::class, 'destroy'])->name('purchase-receiving.delete');
+Route::get('/purchase-receiving/get-po/{po_id}', [PurchaseReceivingController::class, 'get_po'])
+    ->name('purchase-receiving.get-po');
+
+
 
 // Supplier Route
 Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier.index');
