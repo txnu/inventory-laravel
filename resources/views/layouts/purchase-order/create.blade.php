@@ -23,9 +23,9 @@
 					{{-- PO Code --}}
 					<div>
 						<label class="block text-sm text-gray-600">PO Code</label>
-						<input type="text" name="po_code"
-							class="uppercase w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
-							required>
+						<input type="text" name="po_code" value="{{ $po_code }}"
+							class="uppercase w-full px-3 py-2 border rounded-md bg-gray-200 cursor-not-allowed focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
+							readonly>
 					</div>
 
 					{{-- Supplier --}}

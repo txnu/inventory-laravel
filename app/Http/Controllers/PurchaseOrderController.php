@@ -28,8 +28,9 @@ class PurchaseOrderController extends Controller
     {
         $product = Product::all();
         $supplier = Supplier::all();
+        $po_code = $this->generate_po_code();
 
-        return view('layouts.purchase-order.create', compact('supplier', 'product'));
+        return view('layouts.purchase-order.create', compact('supplier', 'product', 'po_code'));
     }
 
     /**
@@ -38,9 +39,10 @@ class PurchaseOrderController extends Controller
     public function store(StorePurchaseOrderRequest $request)
     {
         $data = $request->validated();
+        $po_code = $this->generate_po_code();
 
         $po = PurchaseOrder::create([
-            'po_code' => $data['po_code'],
+            'po_code' => $po_code,
             'supplier_id' => $data['supplier_id'],
             'order_date' => $data['order_date'],
             'delivery_date' => $data['delivery_date'],
@@ -157,5 +159,24 @@ class PurchaseOrderController extends Controller
     public function destroy(PurchaseOrder $purchaseOrder)
     {
         //
+    }
+
+    private function generate_po_code()
+    {
+        //GET LAST PRODUCT
+        $get_po_code = PurchaseOrder::where('po_code', 'like', 'PO%')
+            ->orderBy('po_code', 'desc')
+            ->first();
+
+        if (!$get_po_code) {
+            return 'PO001';
+        }
+
+        //GET LAST NUMBER OF PRODUCT
+
+        $last_number = (int) substr($get_po_code->po_code, 3);
+        $new_number = $last_number + 1;
+
+        return 'PO' . str_pad($new_number, 3, '0', STR_PAD_LEFT);
     }
 }
