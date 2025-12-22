@@ -19,13 +19,13 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('layouts.products.create', compact('categories'));
+        $next_sku = $this->generate_sku();
+        return view('layouts.products.create', compact('categories', 'next_sku'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'sku' => 'required|string|max:50|uppercase|unique:products,sku',
             'product_name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,category_id',
@@ -46,8 +46,10 @@ class ProductController extends Controller
             $imagePath = $request->file('image_url')->store('products', 'public');
         }
 
+        $sku = $this->generate_sku();
+
         $product = Product::create([
-            'sku' => $request->sku,
+            'sku' => $sku,
             'product_name' => $request->product_name,
             'description' => $request->description,
             'category_id' => $request->category_id,
@@ -102,5 +104,24 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('product.index')->with('success', 'Product has been deleted successfully');
+    }
+
+    private function generate_sku()
+    {
+        //GET LAST PRODUCT
+        $get_product = Product::where('sku', 'like', 'PRD%')
+            ->orderBy('sku', 'desc')
+            ->first();
+
+        if (!$get_product) {
+            return 'PRD001';
+        }
+
+        //GET LAST NUMBER OF PRODUCT
+
+        $last_number = (int) substr($get_product->sku, 3);
+        $new_number = $last_number + 1;
+
+        return 'PRD' . str_pad($new_number, 3, '0', STR_PAD_LEFT);
     }
 }
