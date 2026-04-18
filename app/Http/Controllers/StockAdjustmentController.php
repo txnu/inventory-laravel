@@ -25,7 +25,7 @@ class StockAdjustmentController extends Controller
      */
     public function create()
     {
-        $product = Product::all();
+        $product = Product::where('is_active', 1)->get();
         return view('layouts.stock-adjustment.create', compact('product'));
     }
 
