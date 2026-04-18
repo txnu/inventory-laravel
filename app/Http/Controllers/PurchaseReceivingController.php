@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePurchaseReceivingRequest;
+use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItems;
 use Illuminate\Http\Request;
@@ -57,7 +58,9 @@ class PurchaseReceivingController extends Controller
 
         $users = User::all();
 
-        return view('layouts.purchase-receiving.create', compact('purchase_orders', 'users'));
+        $receiving_code = $this->generate_receiving_code();
+
+        return view('layouts.purchase-receiving.create', compact('purchase_orders', 'users', 'receiving_code'));
     }
 
     /**
@@ -66,17 +69,19 @@ class PurchaseReceivingController extends Controller
     public function store(StorePurchaseReceivingRequest $request)
     {
         $data = $request->validated();
+        $receiving_code = $this->generate_receiving_code();
+
+        // STORE
 
         DB::beginTransaction();
 
         try {
             $receiving = PurchaseReceiving::create([
                 'po_id' => $data['po_id'],
-                'receiving_code' => $data['receiving_code'],
+                'receiving_code' => $receiving_code,
                 'receiving_date' => $data['receiving_date'],
-                'status' => 'PARTIAL',
+                'status' => 'partial',
                 'receiving_by' => $data['supplier_id'],
-                'qty_received' => $data['qty_received'],
             ]);
 
             foreach ($data['items'] as $item) {
@@ -87,9 +92,15 @@ class PurchaseReceivingController extends Controller
                     ->where('po_id', $data['po_id'])
                     ->firstOrFail();
 
+
+
+                $remaining_qty = $po_item->qty_ordered - $po_item->qty_received;
+                $receive_now = min($receive_now, $remaining_qty);
+                if ($receive_now <= 0) continue;
+
                 $stock = Stock::where('product_id', $po_item->product_id)->first();
 
-
+                // CREATE PURCHASE RECEIVING ITEMS
                 PurchaseReceivingItems::create([
                     'pr_id' => $receiving->pr_id,
                     'product_id' => $po_item->product_id,
@@ -97,13 +108,16 @@ class PurchaseReceivingController extends Controller
                     'note' => $item['note'] ?? null
                 ]);
 
+                // UPDATE QTY RECEIVED IN PURCHASE ORDER ITEMS
                 $po_item->qty_received += $receive_now;
                 $po_item->save();
 
+                // CALCULATE STOCK ADJUSTMENT
                 $systemQty = $stock->qty_on_hand;
                 $physicalQty = $systemQty + $receive_now;
                 $difference = $physicalQty - $systemQty;
 
+                // CREATE STOCK ADJUSTMENT
                 $stock_adjusment = StockAdjustment::create([
                     'product_id' => $po_item->product_id,
                     'product_stock_id' => $stock->stock_id,
@@ -118,7 +132,7 @@ class PurchaseReceivingController extends Controller
 
                 $movementQty = abs($difference);
 
-
+                // CREATE STOCK MOVEMENT
                 StockMovement::create(
                     [
                         'product_id' => $po_item->product_id,
@@ -133,6 +147,7 @@ class PurchaseReceivingController extends Controller
                     ]
                 );
 
+                // VALIDATED STOCK
                 if ($stock) {
                     $stock->qty_on_hand += $receive_now;
                     $stock->save();
@@ -144,17 +159,40 @@ class PurchaseReceivingController extends Controller
                 }
             }
 
-            $all_po_items = PurchaseOrderItems::where('po_id', $data['po_id'])->get();
 
+
+            // UPDATE STATUS PURCHASE ORDER
+            $all_po_items = PurchaseOrderItems::where('po_id', $data['po_id'])->get();
             $is_completed = $all_po_items->every(function ($item) {
                 return $item->qty_received >= $item->qty_ordered;
             });
 
+            $total_received = $all_po_items->sum('qty_received');
+            $total_ordered = $all_po_items->sum('qty_ordered');
+
+            if ($total_received == 0) {
+                $status = 'ordered';
+            } elseif ($total_received < $total_ordered) {
+                $status = 'partial';
+            } else {
+                $status = 'received';
+            }
+
+            // Status for receiving
+            $receiving_status = ($total_received >= $total_ordered) ? 'completed' : 'partial';
+
+
             $po = PurchaseOrder::find($data['po_id']);
-            $po->status = $is_completed ? 'completed' : 'partial';
+            $po->status = $status;
             $po->save();
 
+            // Update status for receiving
+            $receiving->status = $receiving_status;
+            $receiving->save();
+
+
             DB::commit();
+
             return redirect()->route('purchase-receiving.index')
                 ->with('success', 'Receiving saved successfully');
         } catch (\Exception $e) {
@@ -166,9 +204,23 @@ class PurchaseReceivingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(PurchaseReceiving $purchase_receiving, $id)
     {
-        //
+        $pr = $purchase_receiving::with('items.product')
+            ->where('pr_id', $id)
+            ->firstOrFail();
+
+        $product = Product::all();
+
+        $items = $pr->items->map(function ($item) {
+            return [
+                'product_id' => $item->product_id,
+                'qty_received' => $item->qty_received,
+                'note'      => $item->note,
+            ];
+        });
+
+        return view('layouts.purchase-receiving.show', compact('pr', 'product', 'items'));
     }
 
     /**
@@ -193,5 +245,24 @@ class PurchaseReceivingController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function generate_receiving_code()
+    {
+        //GET LAST PRODUCT
+        $get_receiving_code = PurchaseReceiving::where('receiving_code', 'like', 'PR%')
+            ->orderBy('receiving_code', 'desc')
+            ->first();
+
+        if (!$get_receiving_code) {
+            return 'PR001';
+        }
+
+        //GET LAST NUMBER OF PRODUCT
+
+        $last_number = (int) substr($get_receiving_code->receiving_code, 3);
+        $new_number = $last_number + 1;
+
+        return 'PR' . str_pad($new_number, 3, '0', STR_PAD_LEFT);
     }
 }

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreignId('receiving_by')
                 ->constrained('users', 'user_id')
                 ->onDelete('restrict');
-            $table->integer('qty_received');
             $table->enum('status', ['partial', 'completed']);
             $table->timestamps();
         });

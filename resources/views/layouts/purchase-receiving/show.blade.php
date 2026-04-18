@@ -1,42 +1,25 @@
 @php
-	$locked = in_array($po->status, ['received', 'closed', 'canceled']);
+	$locked = in_array($pr->status, ['received', 'closed', 'canceled', 'partial']);
 	$itemsJson = json_encode($items, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
 @endphp
 
 
 <div class="flex flex-col gap-4">
 	<h2 class="text-xl font-semibold mb-2">
-		Detail Purchase Order
+		Detail Purchase Receiving
 	</h2>
 
-	<form action="{{ route('purchase-order.update', $po->po_id) }}" method="POST"
+	<form action="{{ route('purchase-receiving.update', $pr->pr_id) }}" method="POST"
 		class="grid grid-cols-1 md:grid-cols-2 gap-4">
 		@csrf
 		@method('PUT')
 
 		{{-- Po code --}}
 		<div>
-			<label class="block text-sm text-gray-600">PO Code</label>
+			<label class="block text-sm text-gray-600">PR Code</label>
 			<input type="text" name="po_code"
 				class="w-full px-3 py-2 border rounded-md focus:border-blue-400 focus:outline-none bg-gray-100 text-gray-500 cursor-not-allowed"
-				value="{{ $po->po_code }}" readonly>
-		</div>
-
-
-		{{-- Supplier --}}
-		<div>
-			<label class="block text-sm text-gray-600">Supplier Name</label>
-			<input type="text" name="supplier_id"
-				class="w-full px-3 py-2 border rounded-md bg-gray-100 text-gray-500 cursor-not-allowed"
-				value="{{ $po->supplier->supplier_name ?? '-' }}" readonly>
-		</div>
-
-		{{-- Order date --}}
-		<div>
-			<label class="block text-sm text-gray-600">Order date</label>
-			<input type="date" name="order_date"
-				class="w-full px-3 py-2 border rounded-md focus:border-blue-400 focus:outline-none bg-gray-100 text-gray-500 cursor-not-allowed"
-				value="{{ $po->order_date }}" readonly>
+				value="{{ $pr->receiving_code }}" readonly>
 		</div>
 
 		{{-- Delivery date --}}
@@ -44,45 +27,39 @@
 			<label class="block text-sm text-gray-600">Delivery date</label>
 			<input type="date" name="delivery_date"
 				class="w-full px-3 py-2 border rounded-md focus:border-blue-400 focus:outline-none bg-gray-100 text-gray-500 cursor-not-allowed"
-				value="{{ $po->delivery_date }}" readonly>
+				value="{{ $pr->receiving_date }}" readonly>
+		</div>
+
+
+
+		{{-- Status --}}
+		<div>
+			<label class="block text-sm text-gray-600">Status</label>
+			<input type="text" name="status"
+				class="w-full px-3 py-2 border rounded-md bg-gray-100 text-gray-500 cursor-not-allowed"
+				value="{{ ucfirst($pr->status) }}" readonly>
+
 		</div>
 
 		{{-- Status --}}
 		<div>
 			<label class="block text-sm text-gray-600">Status</label>
 			<input type="text" name="status"
-				class="w-full px-3 py-2 border rounded-md bg-gray-100 text-gray-500 cursor-not-allowed" value="{{ $po->status }}"
-				readonly>
+				class="w-full px-3 py-2 border rounded-md bg-gray-100 text-gray-500 cursor-not-allowed"
+				value="{{ ucfirst($pr->status) }}" readonly>
 
 		</div>
 
-		{{-- Total amount --}}
-		<div>
-			<label class="block text-sm text-gray-600">Total Amount</label>
-			<input type="numeric" name="total_amount"
-				class="w-full px-3 py-2 border rounded-md focus:border-blue-400 focus:outline-none bg-gray-100 text-gray-500 cursor-not-allowed"
-				value="{{ $po->total_amount }}" readonly>
-		</div>
+		<div x-data='prItems({!! $itemsJson !!})' class="mt-8 md:col-span-2">
 
-		{{-- Note --}}
-		<div class="md:col-span-2">
-			<label class="block text-sm text-gray-600">Notes</label>
-			<textarea name="notes" rows="3"
-			 class="w-full px-3 py-2 border rounded-md focus:border-blue-400 focus:outline-none bg-gray-100 text-gray-500 cursor-not-allowed"
-			 readonly>{{ $po->notes }}</textarea>
-		</div>
-
-		<div x-data='poItems({!! $itemsJson !!})' class="mt-8 md:col-span-2">
-
-			<h3 class="text-lg font-semibold mb-2">Purchase Order Items</h3>
+			<h3 class="text-lg font-semibold mb-2">Purchase Receiving Items</h3>
 
 			<table class="w-full text-sm">
 				<thead class="bg-gray-100">
 					<tr class="border-t border-b border-gray-300">
 						<th class="px-2 py-2 w-1/3">Product</th>
-						<th class="px-2 py-2 w-24">Qty</th>
-						<th class="px-2 py-2 w-32">Price</th>
-						<th class="px-2 py-2 w-32">Total</th>
+						<th class="px-2 py-2 w-24">Qty Received</th>
+						<th class="px-2 py-2 w-32">Note</th>
 					</tr>
 				</thead>
 
@@ -102,21 +79,14 @@
 							</td>
 
 							<td class="border-t border-b border-gray-300 px-2 py-2">
-								<input type="number" min="1" x-model="item.qty_ordered" @input="updateRow(index)"
-									:name="`items[${index}][qty_ordered]`"
+								<input type="number" min="1" x-model="item.qty_received" @input="updateRow(index)"
+									:name="`items[${index}][qty_received]`"
 									class="w-full border border-gray-300  rounded-md px-2 py-1 bg-gray-100 text-gray-500 cursor-not-allowed"
 									{{ $locked ? 'disabled' : '' }} readonly>
 							</td>
 
 							<td class="border-t border-b border-gray-300 px-2 py-2">
-								<input type="number" min="0" x-model="item.price" @input="updateRow(index)"
-									:name="`items[${index}][price]`"
-									class="w-full border border-gray-300 rounded-md px-2 py-1 bg-gray-100 text-gray-500 cursor-not-allowed"
-									{{ $locked ? 'disabled' : '' }} readonly>
-							</td>
-
-							<td class="border-t border-b border-gray-300 px-2 py-2">
-								<input type="number" x-model="item.total" :name="`items[${index}][total]`"
+								<input type="text" x-model="item.note" :name="`items[${index}][note]`"
 									class="w-full border border-gray-300 rounded-md px-2 py-1 bg-gray-100 text-gray-500 cursor-not-allowed"
 									readonly>
 							</td>

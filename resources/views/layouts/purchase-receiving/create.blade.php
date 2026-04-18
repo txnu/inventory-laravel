@@ -37,9 +37,9 @@
 					{{-- Receiving code --}}
 					<div>
 						<label class="block text-sm text-gray-600">Receiving code</label>
-						<input type="text" name="receiving_code"
-							class="uppercase w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
-							required>
+						<input type="text" name="receiving_code" value="{{ $receiving_code }}"
+							class="uppercase cursor-not-allowed bg-gray-200 w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
+							readonly>
 					</div>
 
 					{{-- Receiving date --}}
