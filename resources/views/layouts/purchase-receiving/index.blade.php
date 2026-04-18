@@ -23,7 +23,7 @@
 			<div class="flex flex-col gap-4">
 
 				{{-- Header Table --}}
-				<div class="flex justify-between items-center gap-4">
+				<div class="flex justify-between items-center overflow-x-auto gap-4">
 					<div class="flex items-center gap-2">
 						<input type="text" placeholder="Search purchase..."
 							class="px-3 py-2 text-sm rounded-3xl border border-gray-300 focus:border-blue-400 focus:outline-none">
