@@ -24,7 +24,7 @@
 					<h2 class="text-sm text-gray-500">Total Sales</h2>
 					<i class="fa-solid fa-money-bill-wave text-green-500"></i>
 				</div>
-				<p class="text-2xl font-semibold text-gray-800">Rp 58.2M</p>
+				<p class="text-2xl font-semibold text-gray-800">Rp 22.900.000</p>
 				<span class="text-xs text-green-600">+5% this week</span>
 			</div>
 
