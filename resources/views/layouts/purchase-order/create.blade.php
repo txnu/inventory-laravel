@@ -49,7 +49,7 @@
 
 					{{-- Delivery date --}}
 					<div>
-						<label class="block text-sm text-gray-600">Delivery date</label>
+						<label class="block text-sm text-gray-600">Delivery date (estimated)</label>
 						<input type="date" name="delivery_date"
 							class="w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500 focus:outline-none" required>
 					</div>

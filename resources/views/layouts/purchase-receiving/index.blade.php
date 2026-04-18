@@ -1,7 +1,6 @@
 @extends('layout')
 
 
-
 @section('content')
 	<div x-data="purchaseReceivingModal()" class="relative w-full px-4 py-3">
 		<div class="min-h-screen w-full bg-white rounded-2xl p-6">
@@ -46,8 +45,8 @@
 					<table class="w-full text-left border-collapse">
 						<thead>
 							<tr class="text-sm border-b text-gray-500">
-								<th class="py-2 px-2">PO Code</th>
 								<th class="py-2 px-2">Receiving code</th>
+								<th class="py-2 px-2">PO Code</th>
 								<th class="py-2 px-2">Receiving date</th>
 								<th class="py-2 px-2">Receiving by</th>
 								<th class="py-2 px-2">Status</th>
@@ -57,8 +56,8 @@
 						<tbody>
 							@foreach ($purchase_receivings as $pr)
 								<tr class="text-sm text-gray-700 border-b hover:bg-gray-50">
-									<td class="py-2 px-2">{{ $pr->purchase_order->po_code }}</td>
 									<td class="py-2 px-2">{{ $pr->receiving_code }}</td>
+									<td class="py-2 px-2">{{ $pr->purchase_order->po_code }}</td>
 									<td class="py-2 px-2">{{ $pr->receiving_date }}</td>
 									<td class="py-2 px-2">{{ $pr->user->name }}</td>
 									@php
@@ -179,16 +178,15 @@
 		}
 
 
-		function poItems(initialItems = []) {
+		function prItems(initialItems = []) {
 			return {
 				items: initialItems,
 
 				addRow() {
 					this.items.push({
 						product_id: '',
-						qty_ordered: 1,
-						price: 0,
-						total: 0
+						qty_received: 1,
+						note: ''
 					});
 				},
 
@@ -198,12 +196,7 @@
 
 				updateRow(index) {
 					const item = this.items[index];
-					item.total = item.qty_ordered * item.price;
 				},
-
-				get grandTotal() {
-					return this.items.reduce((sum, i) => sum + Number(i.total || 0), 0);
-				}
 			};
 		}
 	</script>

@@ -23,7 +23,6 @@ class StorePurchaseReceivingRequest extends FormRequest
     {
         return [
             'po_id' => 'required|exists:purchase_orders,po_id',
-            'receiving_code' => 'string|unique:purchase_receivings,receiving_code|required',
             'receiving_date' => 'date|required',
             'supplier_id' => 'integer|required|exists:users,user_id',
             'items' => 'required|array|min:1',

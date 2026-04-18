@@ -17,7 +17,6 @@ class PurchaseReceiving extends Model
         'receiving_code',
         'receiving_date',
         'receiving_by',
-        'qty_received',
         'status',
     ];
 
@@ -29,5 +28,10 @@ class PurchaseReceiving extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'receiving_by', 'user_id');
+    }
+
+    public function items()
+    {
+        return $this->hasMany(PurchaseReceivingItems::class, 'pr_id', 'pr_id');
     }
 }

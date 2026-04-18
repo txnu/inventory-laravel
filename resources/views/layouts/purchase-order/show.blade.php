@@ -51,8 +51,8 @@
 		<div>
 			<label class="block text-sm text-gray-600">Status</label>
 			<input type="text" name="status"
-				class="w-full px-3 py-2 border rounded-md bg-gray-100 text-gray-500 cursor-not-allowed" value="{{ $po->status }}"
-				readonly>
+				class="w-full px-3 py-2 border rounded-md bg-gray-100 text-gray-500 cursor-not-allowed"
+				value="{{ ucfirst($po->status) }}" readonly>
 
 		</div>
 
