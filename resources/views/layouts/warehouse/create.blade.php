@@ -21,9 +21,9 @@
 				<div class="grid grid-cols-2 gap-4">
 					<div>
 						<label class="block text-sm text-gray-600">Warehouse code</label>
-						<input type="text" name="warehouse_code"
-							class="uppercase w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
-							required>
+						<input type="text" name="warehouse_code" value="{{ $wr_code }}"
+							class="uppercase w-full px-3 py-2 border rounded-md bg-gray-200 focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
+							readonly required>
 					</div>
 					<div>
 						<label class="block text-sm text-gray-600">Warehouse name</label>
@@ -135,7 +135,7 @@
 							.then(data => {
 								city.innerHTML = `<option value="">Select city</option>`;
 								data.forEach(kota => {
-									city.innerHTML += `<option value="${kota.name}">${kota.name}</option>`;
+									city.innerHTML += `<option value="${kota.id}">${kota.name}</option>`;
 								});
 							});
 					}

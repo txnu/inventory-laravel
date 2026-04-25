@@ -1,4 +1,5 @@
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-4" data-warehouse-province="{{ $w->province }}" data-warehouse-city="{{ $w->city }}"
+	data-warehouse-country="{{ $w->country }}">
 	<h2 class="text-xl font-semibold mb-2">
 		{{ $mode === 'edit' ? 'Edit Warehouse' : 'Warehouse Detail' }}
 	</h2>
@@ -33,30 +34,34 @@
 		<div>
 			<label class="block text-sm text-gray-600">Country</label>
 			<select name="country" id="country"
-				class="w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500" required>
+				class="w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500 {{ $mode === 'view' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'bg-white' }}"
+				{{ $mode === 'view' ? 'disabled' : '' }} required>
 				<option value="">Select Country</option>
-				<option value="Indonesia">Indonesia</option>
+				<option value="Indonesia" {{ $w->country == 'Indonesia' ? 'selected' : '' }}>Indonesia</option>
 			</select>
 		</div>
 
 		<div>
 			<label class="block text-sm text-gray-600">Province</label>
 			<select name="province" id="province"
-				class="w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500" required>
-				<option value="{{ $w->province }}">Select province</option>
+				class="w-full px-3 py-2 border rounded-md bg-gray-100 focus:border-blue-500 focus:ring-blue-500 {{ $mode === 'view' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'bg-white' }}"
+				{{ $mode === 'view' ? 'disabled' : '' }} required>
+				required>
+				<option value="">Select province</option>
 			</select>
 		</div>
 
 		<div>
 			<label class="block text-sm text-gray-600">City</label>
 			<select name="city" id="city"
-				class="w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500" required>
-				<option value="{{ $w->province }}">Select city</option>
+				class="w-full px-3 py-2 border rounded-md focus:border-blue-500 focus:ring-blue-500 {{ $mode === 'view' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'bg-white' }}"
+				{{ $mode === 'view' ? 'disabled' : '' }} required>
+				<option value="">Select city</option>
 			</select>
 		</div>
 		<div>
 			<label class="block text-sm text-gray-600">Postal code</label>
-			<input type="text" name="province"
+			<input type="text" name="postal_code"
 				class="w-full px-3 py-2 border rounded-md focus:border-blue-400 focus:outline-none {{ $mode === 'view' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'bg-white' }}"
 				value="{{ $w->postal_code }}" {{ $mode === 'view' ? 'readonly' : '' }}>
 		</div>
@@ -95,69 +100,6 @@
 		</div>
 
 	</form>
-	<script>
-		document.addEventListener("DOMContentLoaded", function() {
-
-			const country = document.getElementById("country");
-			const province = document.getElementById("province");
-			const city = document.getElementById("city");
-
-			const selectedProvince = "{{ $w->province }}";
-			const selectedCity = "{{ $w->city }}";
-
-			// AUTO LOAD IF EDIT MODE
-			if (country.value === "Indonesia") {
-				loadProvinces().then(() => {
-					if (selectedProvince) {
-						province.value = selectedProvince;
-						loadCities(selectedProvince).then(() => {
-							if (selectedCity) {
-								city.value = selectedCity;
-							}
-						});
-					}
-				});
-			}
-
-			country.addEventListener("change", function() {
-				if (this.value === "Indonesia") {
-					loadProvinces();
-				}
-			});
-
-			function loadProvinces() {
-				return fetch("https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json")
-					.then(response => response.json())
-					.then(data => {
-						province.innerHTML = `<option value="">Select province</option>`;
-						city.innerHTML = `<option value="">Select city</option>`;
-
-						data.forEach(prov => {
-							province.innerHTML += `<option value="${prov.id}">${prov.name}</option>`;
-						});
-					});
-			}
-
-			province.addEventListener("change", function() {
-				let provID = this.value;
-				if (provID) {
-					loadCities(provID);
-				}
-			});
-
-			function loadCities(provID) {
-				return fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provID}.json`)
-					.then(response => response.json())
-					.then(data => {
-						city.innerHTML = `<option value="">Select city</option>`;
-						data.forEach(kota => {
-							city.innerHTML += `<option value="${kota.id}">${kota.name}</option>`;
-						});
-					});
-			}
-
-		});
-	</script>
 
 
 

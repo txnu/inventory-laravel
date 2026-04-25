@@ -22,7 +22,8 @@ class WarehouseController extends Controller
      */
     public function create()
     {
-        return view('layouts.warehouse.create');
+        $wr_code = $this->generate_warehouse_code();
+        return view('layouts.warehouse.create', compact('wr_code'));
     }
 
     /**
@@ -87,6 +88,23 @@ class WarehouseController extends Controller
      */
     public function destroy(Warehouse $warehouse)
     {
-        //
+        $delete = $warehouse::where('warehouse_id', $warehouse->warehouse_id)->firstOrFail();
+        $delete->delete();
+
+        return redirect()->route('warehouse.index')->with('success', 'Warehouse deleted successfully');
+    }
+
+    private function generate_warehouse_code()
+    {
+        $lastWarehouse = Warehouse::orderBy('created_at', 'desc')->first();
+
+        if (!$lastWarehouse) {
+            return 'WH0001';
+        }
+
+        $lastCode = $lastWarehouse->warehouse_code;
+        $number = (int) substr($lastCode, 3);
+        $number++;
+        return 'WH' . str_pad($number, 4, '0', STR_PAD_LEFT);
     }
 }

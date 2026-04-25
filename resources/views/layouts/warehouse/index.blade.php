@@ -156,14 +156,126 @@
 						this.modalContent = `<p class='text-red-500 text-center'>${e.message}</p>`;
 					} finally {
 						this.loading = false;
+						// Initialize selects after modal content is loaded
+						setTimeout(() => {
+							this.initSelects();
+						}, 200);
 					}
 				},
 
 				closeModal() {
 					this.showModal = false;
 					this.modalContent = '';
+				},
+
+				initSelects() {
+					const modalDiv = document.querySelector('[data-warehouse-province]');
+					if (!modalDiv) return;
+
+					const selectedProvince = modalDiv.dataset.warehouseProvince;
+					const selectedCity = modalDiv.dataset.warehouseCity;
+					const countryValue = modalDiv.dataset.warehouseCountry;
+
+					const country = document.getElementById("country");
+					const province = document.getElementById("province");
+					const city = document.getElementById("city");
+
+					if (country) {
+						country.value = countryValue;
+						country.addEventListener("change", function() {
+							if (this.value === "Indonesia") {
+								loadProvinces();
+							}
+						});
+					}
+
+					if (province) {
+						province.addEventListener("change", function() {
+							let provID = this.value;
+							if (provID) {
+								loadCities(provID);
+							}
+						});
+					}
+
+					if (country && country.value === "Indonesia" && selectedProvince) {
+						let provinceID = selectedProvince;
+						if (isNaN(selectedProvince)) {
+							// Assume name, load provinces to find ID
+							loadProvinces().then(() => {
+								const options = province.querySelectorAll('option');
+								for (let opt of options) {
+									if (opt.textContent.trim() === selectedProvince.trim()) {
+										provinceID = opt.value;
+										province.value = provinceID;
+										break;
+									}
+								}
+								if (provinceID) {
+									loadCities(provinceID).then(() => {
+										setCityValue(selectedCity);
+									});
+								}
+							});
+						} else {
+							// ID
+							loadProvinces().then(() => {
+								province.value = provinceID;
+								loadCities(provinceID).then(() => {
+									setCityValue(selectedCity);
+								});
+							});
+						}
+					}
+
+					function setCityValue(selectedCity) {
+						if (!selectedCity || !city) return;
+						if (isNaN(selectedCity)) {
+							// Find ID by name
+							const cityOptions = city.querySelectorAll('option');
+							for (let opt of cityOptions) {
+								if (opt.textContent.trim() === selectedCity.trim()) {
+									city.value = opt.value;
+									break;
+								}
+							}
+						} else {
+							city.value = selectedCity;
+						}
+					}
 				}
 			}
+		}
+
+		function loadProvinces() {
+			const province = document.getElementById("province");
+			const city = document.getElementById("city");
+			if (!province || !city) return Promise.resolve();
+
+			return fetch("https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json")
+				.then(response => response.json())
+				.then(data => {
+					province.innerHTML = `<option value="">Select province</option>`;
+					city.innerHTML = `<option value="">Select city</option>`;
+
+					data.forEach(prov => {
+						province.innerHTML += `<option value="${prov.id}">${prov.name}</option>`;
+					});
+				});
+		}
+
+		function loadCities(provID) {
+			const city = document.getElementById("city");
+			if (!city) return Promise.resolve();
+
+			return fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provID}.json`)
+				.then(response => response.json())
+				.then(data => {
+					city.innerHTML = `<option value="">Select city</option>`;
+					data.forEach(kota => {
+						city.innerHTML += `<option value="${kota.id}">${kota.name}</option>`;
+					});
+				});
 		}
 	</script>
 @endsection
