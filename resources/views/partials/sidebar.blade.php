@@ -174,9 +174,9 @@
 
 			<!-- Sales Orders -->
 			<li>
-				<a href="#"
+				<a href="{{ route('sales-order.index') }}"
 					class="flex items-center gap-4 text-base px-3 py-2.5 rounded-lg transition
-                           {{ request()->routeIs('sales-orders.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+                           {{ request()->routeIs('sales-order.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
 					<x-heroicon-o-receipt-percent class="w-5 h-5 min-w-[20px]" />
 					<span class="whitespace-nowrap overflow-hidden transition-all duration-300"
 						:class="(sidebarOpen || sidebarHovered) ? 'opacity-100 w-auto' :
