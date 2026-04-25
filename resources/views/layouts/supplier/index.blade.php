@@ -29,6 +29,7 @@
 					</div>
 					<div class="flex items-center gap-2">
 						<button class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer">
+							@csrf
 							<x-zondicon-printer class="w-5" />
 						</button>
 						<a href="{{ route('supplier.create') }}"
