@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-	<section class="w-full px-6 py-6 space-y-6">
+	<section class="flex flex-col w-full px-6 py-6 space-y-6 overflow-auto">
 		<!-- Judul halaman -->
 		<div class="flex items-center justify-between">
 			<h1 class="text-2xl font-semibold text-gray-800">Dashboard Overview</h1>
